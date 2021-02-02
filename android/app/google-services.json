@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "660075337410",
+    "project_id": "flutter-firebase-8feca",
+    "storage_bucket": "flutter-firebase-8feca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660075337410:android:a1dff88a1ed420ae770d5b",
+        "android_client_info": {
+          "package_name": "com.example.carrito_compras"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660075337410-oondfajof303so5mtr4jtejtb25mo5e5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe3N81cQ1fJnWRs6bEuhr8d-yTBkd4-S4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660075337410-oondfajof303so5mtr4jtejtb25mo5e5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
