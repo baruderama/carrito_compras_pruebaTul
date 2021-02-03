@@ -1,3 +1,22 @@
+import 'package:carrito_compras/views/homePage/shopScreen.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ShopScreen(),
+    );
+  }
+}
+
+/*
 import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -138,3 +157,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/
