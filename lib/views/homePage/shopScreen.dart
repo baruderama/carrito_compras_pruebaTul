@@ -2,7 +2,6 @@ import 'package:carrito_compras/constants.dart';
 import 'package:carrito_compras/model/Cart.dart';
 import 'package:carrito_compras/model/Product.dart';
 import 'package:carrito_compras/services/productCrud.dart';
-import 'package:carrito_compras/views/homePage/principalContent.dart';
 import 'package:carrito_compras/views/productPage/productInfo.dart';
 import 'package:faker/faker.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -21,6 +20,9 @@ FirebaseDatabase db = new FirebaseDatabase();
 DatabaseReference productReference = db.reference().child('product');
 DatabaseReference cartReference = db.reference().child('cart');
 DatabaseReference productCartReference = db.reference().child('product_cart');
+TextEditingController _nameFieldController = TextEditingController();
+TextEditingController _desControllerField = TextEditingController();
+TextEditingController _stockControllerField = TextEditingController();
 String lastkey;
 
 class _ShopScreen extends State<ShopScreen> {
@@ -45,6 +47,60 @@ class _ShopScreen extends State<ShopScreen> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.teal[200],
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Agrega tu producto! "),
+                  content: Form(
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    TextFormField(
+                      controller: _nameFieldController,
+                      validator: (value) {
+                        return value.isNotEmpty ? null : "Invalido";
+                      },
+                      decoration:
+                          InputDecoration(hintText: "Nombre del Producto "),
+                    ),
+                    TextFormField(
+                      controller: _desControllerField,
+                      decoration: InputDecoration(hintText: "Descripción"),
+                    ),
+                    TextFormField(
+                      controller: _stockControllerField,
+                      decoration:
+                          InputDecoration(hintText: "Cuántos en stock?"),
+                    ),
+                  ])),
+                  actions: <Widget>[
+                    FlatButton(
+                        onPressed: () {
+                          Product product2 = new Product(
+                              "",
+                              _nameFieldController.text,
+                              _stockControllerField.text,
+                              _desControllerField.text);
+
+                          productReference.push().set(<String, String>{
+                            "name": "" + product2.name,
+                            "stock": "" + product2.description,
+                            "description": "" + product2.stock,
+                          }).then((_) {
+                            print('Transaction  committed.');
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Text("Agregar"))
+                  ],
+                );
+              });
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -99,9 +155,45 @@ class _ShopScreen extends State<ShopScreen> {
                         color: const Color(0xFF167F67),
                       ),
                       onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              Future.delayed(Duration(seconds: 1), () {
+                                Navigator.of(context).pop(true);
+                              });
+                              return AlertDialog(
+                                title: Text("ha sido añadido al carrito"),
+                              );
+                            });
+
                         setState(() {
                           productList.add(product);
                         });
+                      },
+                    ),
+                    new IconButton(
+                      iconSize: 30,
+                      icon: const Icon(
+                        Icons.delete_forever,
+                        color: const Color(0xFF167F67),
+                      ),
+                      onPressed: () async {
+                        await productReference
+                            .child(product.id)
+                            .remove()
+                            .then((_) {
+                          print('Transaction  committed.');
+                        });
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              Future.delayed(Duration(seconds: 1), () {
+                                Navigator.of(context).pop(true);
+                              });
+                              return AlertDialog(
+                                title: Text("ha sido eliminado"),
+                              );
+                            });
                       },
                     ),
                   ],

@@ -68,6 +68,7 @@ class _ProductInfo extends State<ProductInfo> {
                 contProduct++;
               }
             }
+            debugPrint(aux.length.toString() + 'hey');
             ProductCart newProductCart = new ProductCart(
                 "", productList[i].id, lastkey, contProduct.toString());
 
@@ -86,9 +87,9 @@ class _ProductInfo extends State<ProductInfo> {
             });
 
             cont = 0;
-            productList.clear();
-            Navigator.pop(context);
           }
+          productList.clear();
+          Navigator.pop(context);
         },
         padding: EdgeInsets.symmetric(horizontal: 20),
         color: Colors.grey,
