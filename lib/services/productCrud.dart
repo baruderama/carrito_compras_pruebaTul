@@ -2,15 +2,10 @@ import 'dart:async';
 import 'package:carrito_compras/model/Product.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class FirebaseDatabaseUtil {
-  DatabaseReference _counterRef;
-  DatabaseReference _userRef;
-  StreamSubscription<Event> _counterSubscription;
-  StreamSubscription<Event> _messagesSubscription;
-  FirebaseDatabase database = new FirebaseDatabase();
-  int _counter;
-  DatabaseError error;
+FirebaseDatabase db = new FirebaseDatabase();
+DatabaseReference productReference = db.reference().child('product');
 
+class FirebaseDatabaseUtil {
   static final FirebaseDatabaseUtil _instance =
       new FirebaseDatabaseUtil.internal();
 
@@ -20,53 +15,30 @@ class FirebaseDatabaseUtil {
     return _instance;
   }
 
-  void initState() {
-    // Demonstrates configuring to the database using a file
-    //_counterRef = FirebaseDatabase.instance.reference().child('counter');
-    // Demonstrates configuring the database directly
-
-    _userRef = database.reference().child('product');
-  }
-
-  DatabaseError getError() {
-    return error;
-  }
-
-  DatabaseReference getUser() {
-    return _userRef;
-  }
-
-  addUser(Product product) async {
-    _userRef.push().set(<String, String>{
+  void addUser(Product product) async {
+    productReference.push().set(<String, String>{
       "name": "" + product.name,
-      "age": "" + product.description,
-      "email": "" + product.stock,
+      "description": "" + product.description,
+      "stock": "" + product.stock,
     }).then((_) {
       print('Transaction  committed.');
     });
   }
-/*
-  void deleteUser(User user) async {
-    await _userRef.child(user.id).remove().then((_) {
+
+  void deleteUser(Product product) async {
+    await productReference.child(product.id).remove().then((_) {
       print('Transaction  committed.');
     });
   }
 
-  void updateUser(User user) async {
-    await _userRef.child(user.id).update({
-      "name": "" + user.name,
-      "age": "" + user.age,
-      "email": "" + user.email,
-      "mobile": "" + user.mobile,
+  void updateUser(Product product) async {
+    await productReference.child(product.id).update({
+      "name": "" + product.name,
+      "description": "" + product.description,
+      "stock": "" + product.stock,
     }).then((_) {
       print('Transaction  committed.');
     });
-  }
-  */
-
-  void dispose() {
-    _messagesSubscription.cancel();
-    _counterSubscription.cancel();
   }
 }
 
