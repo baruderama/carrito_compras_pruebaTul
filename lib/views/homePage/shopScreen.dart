@@ -1,6 +1,7 @@
 import 'package:carrito_compras/constants.dart';
 import 'package:carrito_compras/model/Cart.dart';
 import 'package:carrito_compras/model/Product.dart';
+import 'package:carrito_compras/services/cartCrud.dart';
 import 'package:carrito_compras/services/productCrud.dart';
 import 'package:carrito_compras/views/productPage/productInfo.dart';
 import 'package:faker/faker.dart';
@@ -16,18 +17,12 @@ class ShopScreen extends StatefulWidget {
 
 int cont = 0;
 List<Product> productList = List<Product>();
-FirebaseDatabase db = new FirebaseDatabase();
-DatabaseReference productReference = db.reference().child('product');
-DatabaseReference cartReference = db.reference().child('cart');
-DatabaseReference productCartReference = db.reference().child('product_cart');
 TextEditingController _nameFieldController = TextEditingController();
 TextEditingController _desControllerField = TextEditingController();
 TextEditingController _stockControllerField = TextEditingController();
 String lastkey;
 
 class _ShopScreen extends State<ShopScreen> {
-  FirebaseDatabaseUtil databaseUtil;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,16 +77,11 @@ class _ShopScreen extends State<ShopScreen> {
                           Product product2 = new Product(
                               "",
                               _nameFieldController.text,
-                              _stockControllerField.text,
-                              _desControllerField.text);
+                              _desControllerField.text,
+                              _stockControllerField.text);
 
-                          productReference.push().set(<String, String>{
-                            "name": "" + product2.name,
-                            "stock": "" + product2.description,
-                            "description": "" + product2.stock,
-                          }).then((_) {
-                            print('Transaction  committed.');
-                          });
+                          ProductCrud().addProduct(product2);
+
                           Navigator.pop(context);
                         },
                         child: Text("Agregar"))
@@ -178,12 +168,8 @@ class _ShopScreen extends State<ShopScreen> {
                         color: const Color(0xFF167F67),
                       ),
                       onPressed: () async {
-                        await productReference
-                            .child(product.id)
-                            .remove()
-                            .then((_) {
-                          print('Transaction  committed.');
-                        });
+                        ProductCrud().deleteProduct(product);
+
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -223,16 +209,13 @@ class _ShopScreen extends State<ShopScreen> {
             // By default our  icon color is white
             color: kTextColor,
           ),
-          onPressed: () {
+          onPressed: () async {
             if (cont == 0) {
               cont = 1;
               cart = new Cart("", "pending");
 
-              cartReference.push().set(<String, String>{
-                "status": "" + cart.status,
-              }).then((_) {
-                print('Transaction  committed.');
-              });
+              CartCrud().addCart(cart);
+
               cartReference.once().then((DataSnapshot snapshot) {
                 Map<dynamic, dynamic> values = snapshot.value;
 
@@ -243,25 +226,11 @@ class _ShopScreen extends State<ShopScreen> {
                   }
                 });
               });
+
               cart = new Cart(lastkey, "pending");
             }
             Navigator.push(context,
                 new MaterialPageRoute(builder: (context) => ProductInfo()));
-
-            /*
-            Product product2 = new Product(
-                "", "Abrigo largo", "12", "abrigo largo azul oscuro");
-
-            productReference.push().set(<String, String>{
-              "name": "" + product2.name,
-              "stock": "" + product2.description,
-              "description": "" + product2.stock,
-            }).then((_) {
-              print('Transaction  committed.');
-            });
-            */
-
-            //databaseUtil.addUser(product2);
           },
         ),
         SizedBox(width: kDefaultPaddin / 2)

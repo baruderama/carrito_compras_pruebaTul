@@ -2,6 +2,9 @@ import 'package:carrito_compras/constants.dart';
 import 'package:carrito_compras/model/Cart.dart';
 import 'package:carrito_compras/model/Product.dart';
 import 'package:carrito_compras/model/ProductCart.dart';
+import 'package:carrito_compras/services/ProductCartCrud.dart';
+import 'package:carrito_compras/services/cartCrud.dart';
+import 'package:carrito_compras/services/productCrud.dart';
 import 'package:carrito_compras/views/homePage/shopScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,9 +17,6 @@ class ProductInfo extends StatefulWidget {
 Cart cart;
 
 class _ProductInfo extends State<ProductInfo> {
-  final Product product = null;
-
-  //const ProductInfo({Key key, this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,21 +33,6 @@ class _ProductInfo extends State<ProductInfo> {
             key: Key(productList[index].id),
             child: showCart(productList[index], index),
           );
-          /*
-          return ListTile(
-            title: Text(todosR[index]),
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("My title"),
-                      content: Text("This is my message."),
-                    );
-                  });
-            },
-          );
-          */
         },
       ),
       floatingActionButton: FlatButton(
@@ -56,6 +41,7 @@ class _ProductInfo extends State<ProductInfo> {
         //   side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
         onPressed: () async {
           List<String> aux = new List<String>();
+          List<Product> auxProduct = new List<Product>();
           for (int y = 0; y < productList.length; y++) {
             aux.add(productList[y].id);
             aux = aux.toSet().toList();
@@ -63,28 +49,27 @@ class _ProductInfo extends State<ProductInfo> {
           debugPrint(aux.length.toString());
           for (int i = 0; i < aux.length; i++) {
             int contProduct = 0;
+            int contOne = 0;
             for (int j = 0; j < productList.length; j++) {
-              if (productList[j].id == productList[i].id) {
+              if (productList[j].id == aux[i]) {
+                if (contOne == 0) {
+                  contOne = 1;
+                  auxProduct.add(productList[j]);
+                  debugPrint(auxProduct[i].name);
+                }
+                debugPrint(aux[i] + 'lol');
                 contProduct++;
               }
             }
             debugPrint(aux.length.toString() + 'hey');
-            ProductCart newProductCart = new ProductCart(
-                "", productList[i].id, lastkey, contProduct.toString());
+            ProductCart newProductCart =
+                new ProductCart("", aux[i], lastkey, contProduct.toString());
 
-            productCartReference.push().set(<String, String>{
-              "idProduct": "" + newProductCart.idProduct,
-              "idCart": "" + newProductCart.idCart,
-              "quantity": "" + newProductCart.quantity,
-            }).then((_) {
-              print('Transaction  committed.');
-            });
+            ProductCartCrud().addProductCart(newProductCart);
 
-            await cartReference.child(lastkey).update({
-              "status": "completed",
-            }).then((_) {
-              print('Transaction  committed.');
-            });
+            ProductCrud().updateProduct(auxProduct[i], contProduct);
+
+            CartCrud().updateCart(lastkey);
 
             cont = 0;
           }
@@ -111,19 +96,6 @@ class _ProductInfo extends State<ProductInfo> {
         ),
         onPressed: () => Navigator.pop(context),
       ),
-      /*
-      actions: <Widget>[
-        IconButton(
-          icon: SvgPicture.asset("assets/icons/search.svg"),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: SvgPicture.asset("assets/icons/cart.svg"),
-          onPressed: () {},
-        ),
-        SizedBox(width: kDefaultPaddin / 2)
-      ],
-      */
     );
   }
 
@@ -156,23 +128,6 @@ class _ProductInfo extends State<ProductInfo> {
                     ),
                   ),
                 ),
-                /*
-                new Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new IconButton(
-                      iconSize: 30,
-                      icon: const Icon(
-                        Icons.delete_forever,
-                        color: const Color(0xFF167F67),
-                      ),
-                      onPressed: () {
-                        productList.remove(productList[index]);
-                      },
-                    ),
-                  ],
-                ),
-                */
               ],
             ),
           ),
