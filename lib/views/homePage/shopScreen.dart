@@ -17,18 +17,20 @@ class ShopScreen extends StatefulWidget {
   _ShopScreen createState() => _ShopScreen();
 }
 
-int cont = 0;
-List<Product> productList = List<Product>();
+int cont = 0; //indicador para limitar los carritos
+List<Product> productList = List<Product>(); //lista de productos en el carrito
+
 TextEditingController _nameFieldController = TextEditingController();
 TextEditingController _desControllerField = TextEditingController();
 TextEditingController _stockControllerField = TextEditingController();
-String lastkey;
+String lastkey; //id del ultimo carrito inmediatamente creado
 
 class _ShopScreen extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
+      //FirebaseAnimatedList es la lista directamente sacada de la firebase
       body: new FirebaseAnimatedList(
         key: new ValueKey<bool>(false),
         query: productReference,
@@ -96,6 +98,7 @@ class _ShopScreen extends State<ShopScreen> {
     );
   }
 
+  //Este widget es cada item de la lista de esta pantalla
   Widget showUser(DataSnapshot res) {
     Product product = Product.fromSnapShot(res);
 
@@ -231,11 +234,7 @@ class _ShopScreen extends State<ShopScreen> {
 
               cart = new Cart(lastkey, "pending");
             }
-            /*
-            BlocProvider(
-        builder: (context) => CartBloc('hola'),
-        child: ShopScreen(),
-      ),*/
+            //ruta hacia la pantalla del carrito
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => BlocProvider.value(

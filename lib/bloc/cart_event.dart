@@ -1,5 +1,9 @@
 part of 'cart_bloc.dart';
 
+/*
+Clase en donde los eventos entran
+
+*/
 @immutable
 abstract class CartEvent extends Equatable {
   const CartEvent();

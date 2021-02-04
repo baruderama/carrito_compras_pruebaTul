@@ -11,6 +11,11 @@ import 'package:meta/meta.dart';
 part 'cart_event.dart';
 part 'cart_state.dart';
 
+/*
+Esta clase es la clase principal del bloC del carrito
+
+*/
+
 class CartBloc extends Bloc<CartEvent, CartState> {
   final String mes;
 

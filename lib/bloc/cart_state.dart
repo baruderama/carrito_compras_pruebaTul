@@ -1,5 +1,10 @@
 part of 'cart_bloc.dart';
 
+/*
+clase en donde se obtienen los estados
+
+*/
+
 @immutable
 abstract class CartState extends Equatable {
   const CartState();

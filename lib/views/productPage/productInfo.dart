@@ -33,6 +33,8 @@ class _ProductInfo extends State<ProductInfo> {
                 productList.remove(productList[index]);
               },
               key: Key(productList[index].id),
+
+              //Actua el CartBloc
               child: BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   if (state is CartInitial) {
@@ -56,43 +58,6 @@ class _ProductInfo extends State<ProductInfo> {
         //   side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
         onPressed: () async {
           completeOrder(context);
-          /*
-          List<String> aux = new List<String>();
-          List<Product> auxProduct = new List<Product>();
-          for (int y = 0; y < productList.length; y++) {
-            aux.add(productList[y].id);
-            aux = aux.toSet().toList();
-          }
-          debugPrint(aux.length.toString());
-          for (int i = 0; i < aux.length; i++) {
-            int contProduct = 0;
-            int contOne = 0;
-            for (int j = 0; j < productList.length; j++) {
-              if (productList[j].id == aux[i]) {
-                if (contOne == 0) {
-                  contOne = 1;
-                  auxProduct.add(productList[j]);
-                  debugPrint(auxProduct[i].name);
-                }
-                debugPrint(aux[i] + 'lol');
-                contProduct++;
-              }
-            }
-            debugPrint(aux.length.toString() + 'hey');
-            ProductCart newProductCart =
-                new ProductCart("", aux[i], lastkey, contProduct.toString());
-
-            ProductCartCrud().addProductCart(newProductCart);
-
-            ProductCrud().updateProduct(auxProduct[i], contProduct);
-
-            CartCrud().updateCart(lastkey);
-
-            cont = 0;
-          }
-          productList.clear();
-          Navigator.pop(context);
-          */
         },
         padding: EdgeInsets.symmetric(horizontal: 20),
         color: Colors.grey,
@@ -179,6 +144,11 @@ class _ProductInfo extends State<ProductInfo> {
 
     return item;
   }
+
+  /*
+  completeOrder es un metodo con el algoritmo para hacer coincidir el id del carrito
+  con cada producto del mismo y modifica el stock de los productos
+  */
 
   void completeOrder(BuildContext context) {
     List<String> aux = new List<String>();
