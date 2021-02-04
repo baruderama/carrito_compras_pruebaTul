@@ -3,7 +3,7 @@
 
 Holaaa, Espero que les guste mi aplicación la cual esta en dos versiones
 version bloc/mvc(rama Bloc version)  y la version mvc (rama master). Espero
-que la disfrutes.
+que la disfrutes. :D
 
 ## Unos tips de uso
 - En la pantalla del carrito si quieres eliminar algun producto deslizalo para
