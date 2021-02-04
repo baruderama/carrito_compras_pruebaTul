@@ -1,6 +1,20 @@
 # carrito_compras
 
+Holaaa, Espero que les guste mi aplicación la cual esta en dos versiones
+version bloc/mvc(rama Bloc version)  y la version mvc (rama master). Espero
+que la disfrutes.
+
+## Unos tips de uso
+- En la pantalla del carrito si quieres eliminar algun producto deslizalo para
+  el lado derecho-izquierdo
+- En la pantalla principal con el boton que tiene un + se puede agregar un producto
+  a la bd
+
+
+
 A new Flutter project.
+
+## Unos tips de uso
 
 ## Getting Started
 
@@ -16,4 +30,6 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-##Unos tips de uso
+## Unos tips de uso
+
+
