@@ -6,7 +6,7 @@ FirebaseDatabase db = new FirebaseDatabase();
 DatabaseReference productCartReference = db.reference().child('product_cart');
 
 class ProductCartCrud {
-  void addProductCart(ProductCart productCart) async {
+  Future<String> addProductCart(ProductCart productCart) async {
     productCartReference.push().set(<String, String>{
       "idProduct": "" + productCart.idProduct,
       "idCart": "" + productCart.idCart,
@@ -14,5 +14,9 @@ class ProductCartCrud {
     }).then((_) {
       print('Transaction  committed.');
     });
+
+    return 'creado';
   }
 }
+
+class NetworkError extends Error {}

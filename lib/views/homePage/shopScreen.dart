@@ -1,3 +1,4 @@
+import 'package:carrito_compras/bloc/cart_bloc.dart';
 import 'package:carrito_compras/constants.dart';
 import 'package:carrito_compras/model/Cart.dart';
 import 'package:carrito_compras/model/Product.dart';
@@ -8,6 +9,7 @@ import 'package:faker/faker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ShopScreen extends StatefulWidget {
@@ -229,8 +231,19 @@ class _ShopScreen extends State<ShopScreen> {
 
               cart = new Cart(lastkey, "pending");
             }
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => ProductInfo()));
+            /*
+            BlocProvider(
+        builder: (context) => CartBloc('hola'),
+        child: ShopScreen(),
+      ),*/
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: BlocProvider.of<CartBloc>(context),
+                  child: ProductInfo(),
+                ),
+              ),
+            );
           },
         ),
         SizedBox(width: kDefaultPaddin / 2)
