@@ -14,7 +14,6 @@ que la disfrutes.
 
 A new Flutter project.
 
-## Unos tips de uso
 
 ## Getting Started
 
